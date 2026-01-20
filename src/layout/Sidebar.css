@@ -1,0 +1,131 @@
+.sidebar {
+    width: 280px;
+    background: #1B5E20;
+    /* Dark premium green */
+    color: white;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    transition: width 0.3s ease;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item.active {
+    background: #4C8C4A;
+    /* Highlighted green capsule */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 10px 12px;
+    background: var(--primary-dark);
+    border-radius: 12px;
+}
+
+.sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+}
+
+.brand-icon {
+    width: 32px;
+    height: 32px;
+    background: #A5D6A7;
+    /* Light green square as seen in photo */
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.brand-name {
+    font-weight: 800;
+    color: white;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+}
+
+.settings-row {
+    width: 100%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
+    cursor: pointer;
+}
+
+.footer-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.footer-subtitle {
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        overflow-x: auto;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex: 1;
+    }
+
+    .nav-item {
+        min-width: 150px;
+    }
+}

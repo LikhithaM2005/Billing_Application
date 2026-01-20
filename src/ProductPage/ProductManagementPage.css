@@ -1,0 +1,80 @@
+.pm-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pm-search {
+  width: 320px;
+  padding: 8px 10px;
+}
+
+.pm-btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.pm-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 18px;
+}
+
+.pm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pm-table thead tr {
+  background: #e9f5ea;
+  color: #1b5e20;
+}
+
+.pm-table th,
+.pm-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.right {
+  text-align: right;
+}
+
+.pm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.pm-form-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.pm-form-card {
+  width: 760px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 18px;
+}
+
+.pm-form-card label {
+  font-weight: 600;
+  margin-top: 12px;
+  display: block;
+}
+
+.pm-form-card input,
+.pm-form-card textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 6px;
+}
+
+.pm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}

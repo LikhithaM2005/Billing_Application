@@ -1,0 +1,237 @@
+import { FormEvent, useState } from "react";
+
+import {
+  FiArrowLeft,
+  FiSave,
+  FiDollarSign,
+  FiCalendar,
+  FiFileText,
+  FiCreditCard,
+  FiHash,
+  FiUser,
+  FiClock,
+} from "react-icons/fi";
+import Layout from "../layout/Layout";
+import { useNavigate } from "react-router-dom";
+import { useDashboard } from "../DashboardPage/DashboardContext";
+
+
+
+export default function LoanRecovery() {
+  const navigate = useNavigate();
+  const { userRole, addRecovery } = useDashboard();
+
+  const [formData, setFormData] = useState({
+    loanId: "",
+    amount: "",
+    recoveredAt: "",
+    remarks: "",
+    paymentMethod: "",
+    txnId: "",
+
+    // system / audit fields
+    createdBy: "Admin", // later map from auth user
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.loanId || !formData.amount) {
+      alert("Loan ID and Amount are required");
+      return;
+    }
+
+    const payload = {
+      loan_id: formData.loanId,
+      amount: Number(formData.amount),
+      recovered_at: formData.recoveredAt || new Date().toISOString(),
+      remarks: formData.remarks || null,
+      payment_method: formData.paymentMethod || null,
+      txn_id: formData.txnId || null,
+      created_by: formData.createdBy,
+      created_at: formData.createdAt,
+      updated_at: new Date().toISOString(),
+    };
+
+    console.log("Loan Recovery Payload:", payload);
+    addRecovery(formData.loanId, Number(formData.amount)); // Update global state
+
+    alert("Loan recovery recorded successfully!");
+    navigate(-1);
+  };
+
+  return (
+    <Layout>
+      <section className="panel">
+
+
+        <form onSubmit={handleSubmit} className="customer-form">
+          {/* LOAN ID */}
+          <div className="form-row">
+            <label>
+              <span>
+                <FiHash /> Loan ID *
+              </span>
+              <input
+                type="text"
+                value={formData.loanId}
+                onChange={(e) =>
+                  setFormData({ ...formData, loanId: e.target.value })
+                }
+                placeholder="Enter loan ID"
+                required
+              />
+            </label>
+          </div>
+
+          {/* AMOUNT + RECOVERY DATE */}
+          <div className="form-row">
+            <label>
+              <span>
+                <FiDollarSign /> Amount Recovered *
+              </span>
+              <input
+                type="number"
+                value={formData.amount}
+                onChange={(e) =>
+                  setFormData({ ...formData, amount: e.target.value })
+                }
+                min={0}
+                placeholder="Enter recovered amount"
+                required
+              />
+            </label>
+
+            <label>
+              <span>
+                <FiCalendar /> Recovered At
+              </span>
+              <input
+                type="datetime-local"
+                value={formData.recoveredAt}
+                onChange={(e) =>
+                  setFormData({ ...formData, recoveredAt: e.target.value })
+                }
+              />
+            </label>
+          </div>
+
+          {/* PAYMENT + TRANSACTION */}
+          <div className="form-row">
+            <label>
+              <span>
+                <FiCreditCard /> Payment Method
+              </span>
+              <select
+                value={formData.paymentMethod}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    paymentMethod: e.target.value,
+                  })
+                }
+              >
+                <option value="">Select payment method</option>
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Card">Card</option>
+              </select>
+            </label>
+
+            <label>
+              <span>
+                <FiHash /> Transaction ID
+              </span>
+              <input
+                type="text"
+                value={formData.txnId}
+                onChange={(e) =>
+                  setFormData({ ...formData, txnId: e.target.value })
+                }
+                placeholder="Optional transaction reference"
+              />
+            </label>
+          </div>
+
+          {/* REMARKS */}
+          <div className="form-row">
+            <label className="full-width">
+              <span>
+                <FiFileText /> Remarks
+              </span>
+              <textarea
+                rows={3}
+                value={formData.remarks}
+                onChange={(e) =>
+                  setFormData({ ...formData, remarks: e.target.value })
+                }
+                placeholder="Additional notes (optional)"
+              />
+            </label>
+          </div>
+
+          {/* AUDIT INFORMATION */}
+          <div className="profile-section">
+            <h4>Audit Information</h4>
+
+            <div className="form-row">
+              <label>
+                <span>
+                  <FiUser /> Created By
+                </span>
+                <input type="text" value={formData.createdBy} disabled />
+              </label>
+
+              <label>
+                <span>
+                  <FiClock /> Created At
+                </span>
+                <input
+                  type="text"
+                  value={new Date(formData.createdAt).toLocaleString()}
+                  disabled
+                />
+              </label>
+            </div>
+
+            <div className="form-row">
+              <label>
+                <span>
+                  <FiClock /> Updated At
+                </span>
+                <input
+                  type="text"
+                  value={new Date(formData.updatedAt).toLocaleString()}
+                  disabled
+                />
+              </label>
+            </div>
+          </div>
+
+          {/* ACTIONS */}
+          <div className="form-actions">
+            <button
+              type="button"
+              className="secondary-btn"
+              onClick={() => navigate(-1)}
+            >
+              <FiArrowLeft />
+              Back
+            </button>
+
+            {(userRole === "Admin" || userRole === "Staff") && (
+              <button type="submit" className="primary-btn">
+                <FiSave />
+                Save Recovery
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+    </Layout>
+  );
+}

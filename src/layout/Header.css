@@ -1,0 +1,150 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: white;
+    padding: 24px 32px;
+    margin: -32px -32px 32px -32px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.header .heading {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800;
+    font-size: 20px;
+    color: #1e293b;
+}
+
+.eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.muted {
+    margin: 2px 0 0;
+    color: var(--muted);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    min-width: 240px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.search input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font: inherit;
+}
+
+.profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px 6px 8px;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile:hover {
+    background: #f1f5f9;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: #4ade80;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.profile-name {
+    font-weight: 600;
+}
+
+.profile-wrapper {
+    position: relative;
+}
+
+.profile-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.25);
+    border: 1px solid var(--border);
+    padding: 6px;
+    min-width: 160px;
+    z-index: 1000;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-menu-item {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font: inherit;
+    cursor: pointer;
+}
+
+.profile-menu-item:hover {
+    background: #E8F5E9;
+}
+
+@media (max-width: 640px) {
+    .header-actions {
+        width: 100%;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .profile {
+        width: 100%;
+        justify-content: center;
+    }
+}
