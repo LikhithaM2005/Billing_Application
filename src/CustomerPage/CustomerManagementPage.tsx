@@ -11,7 +11,9 @@ import {
   FiMail,
 } from "react-icons/fi";
 import Layout from "../layout/Layout";
-import { useDashboard, CustomerType, UserRole } from "../DashboardPage/DashboardContext";
+import { useDashboard } from "../DashboardPage/DashboardContext";
+import type { CustomerType, UserRole } from "../DashboardPage/DashboardContext";
+import "./CustomerManagement.css";
 
 
 

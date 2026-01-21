@@ -216,9 +216,11 @@ export default function ProductManagementPage() {
                     <td>₹{p.price}</td>
                     <td>{p.stockQty}</td>
                     <td className="right">
-                      <button onClick={() => { setSelected(p); setMode("view"); }}>View</button>
-                      <button onClick={() => { setSelected(p); setMode("edit"); }}>Edit</button>
-                      <button onClick={() => handleDelete(p.id)}>Delete</button>
+                      <div className="pm-actions">
+                        <button onClick={() => { setSelected(p); setMode("view"); }}>View</button>
+                        <button onClick={() => { setSelected(p); setMode("edit"); }}>Edit</button>
+                        <button onClick={() => handleDelete(p.id)}>Delete</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

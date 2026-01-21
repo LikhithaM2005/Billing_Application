@@ -1,7 +1,8 @@
 import { FiSettings } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
+import "./Sidebar.css";
 const navItems = [
-  { label: "Dashboard", icon: "🏠", path: "/" },
+  { label: "Dashboard", icon: "🏠", path: "/dashboard" },
   { label: "Customer Management", icon: "👥", path: "/customers" },
   { label: "Category Management", icon: "📦", path: "/categories" },
   { label: "Product Management", icon: "🧾", path: "/products" },

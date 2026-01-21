@@ -15,6 +15,7 @@ import QuickAction from "./QuickAction";
 import RevenueChart from "./RevenueChart";
 import TopProducts from "./TopProducts";
 import { useDashboard } from "./DashboardContext";
+import "./DashboardPage.css";
 
 export default function Dashboard() {
   const { customers, totalRevenue, totalRecovered, products } = useDashboard();

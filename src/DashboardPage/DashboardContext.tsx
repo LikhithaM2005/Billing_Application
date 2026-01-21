@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { nanoid } from "nanoid/non-secure";
-import { Loan } from "../types/loan";
+import type { Loan } from "../types/loan";
 
 export type CustomerType = "Individual" | "Business";
 

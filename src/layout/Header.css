@@ -5,8 +5,13 @@
     gap: 24px;
     background: white;
     padding: 24px 32px;
-    margin: -32px -32px 32px -32px;
+    margin: -32px 0 32px 0;
     border-bottom: 1px solid #f1f5f9;
+}
+
+.header-left {
+    margin-top: 12px;
+    margin-left: 3px;
 }
 
 .header .heading {

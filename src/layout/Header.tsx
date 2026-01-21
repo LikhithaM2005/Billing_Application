@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiChevronDown } from "react-icons/fi";
-import { useDashboard } from "../context/DashboardContext";
+import { useDashboard } from "../DashboardPage/DashboardContext";
+import "./Header.css";
 
 const PAGE_TITLES: Record<string, string> = {
   "/customers": "CUSTOMER MANAGEMENT",
@@ -39,7 +40,7 @@ export default function Header() {
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const isDashboard = location.pathname === "/";
+  const isDashboard = location.pathname === "/dashboard";
   const pageTitle = PAGE_TITLES[location.pathname];
 
   /* Update time ONLY on dashboard */
@@ -83,7 +84,7 @@ export default function Header() {
   return (
     <header className="header">
       {/* LEFT SECTION */}
-      <div>
+      <div className="header-left">
         {isDashboard ? (
           <>
             <p className="eyebrow">Welcome back!!!</p>

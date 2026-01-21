@@ -1,20 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Login from "./Login_Page/Login";
-import Signup from "./Login_Page/Signup";
-import ForgotPassword from "./Login_Page/ForgotPassword";
-import ResetPassword from "./Login_Page/ResetPassword";
-
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import { DashboardProvider } from "./DashboardPage/DashboardContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-      </Routes>
+      <DashboardProvider>
+        <AppRoutes />
+      </DashboardProvider>
     </BrowserRouter>
   );
 }

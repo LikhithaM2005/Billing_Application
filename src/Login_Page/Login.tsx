@@ -53,6 +53,7 @@ const Login = () => {
     if (hasError) return;
 
     console.log("Login successful");
+    navigate("/dashboard");
   };
 
   return (

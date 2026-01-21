@@ -157,9 +157,9 @@ export default function CategoryManagementPage() {
                     <td>{c.updated_at}</td>
                     <td align="right">
                       <div className="action-group">
-                        <button className="primary" onClick={() => { setSelected(c); setMode("view"); }}>View</button>
-                        <button className="primary" onClick={() => { setSelected(c); setMode("edit"); }}>Edit</button>
-                        <button className="primary" onClick={() => handleDelete(c.id)}>Delete</button>
+                        <button onClick={() => { setSelected(c); setMode("view"); }}>View</button>
+                        <button onClick={() => { setSelected(c); setMode("edit"); }}>Edit</button>
+                        <button onClick={() => handleDelete(c.id)}>Delete</button>
                       </div>
                     </td>
                   </tr>
