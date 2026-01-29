@@ -173,7 +173,7 @@ const ReceivePayment = () => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Payment Date <span className="required">*</span></label>
+          <label className="form-label"><span>Payment Date <span className="required">*</span></span></label>
           <input
             type="date"
             name="paymentDate"
@@ -187,7 +187,7 @@ const ReceivePayment = () => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Method <span className="required">*</span></label>
+          <label className="form-label"><span>Method <span className="required">*</span></span></label>
           <select
             name="paymentMethod"
             value={formData.paymentMethod}
