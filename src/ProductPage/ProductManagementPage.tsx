@@ -212,7 +212,6 @@ export default function ProductManagementPage() {
       {mode === "list" && (
         <>
           <div className="pm-header">
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1B5E20', margin: 0 }}>Product Management</h2>
 
             <div className="pm-btn-group">
               <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
