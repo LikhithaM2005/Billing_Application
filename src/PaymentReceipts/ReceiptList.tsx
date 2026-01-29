@@ -72,7 +72,7 @@ const ReceiptList = () => {
   };
 
   const handleNewPayment = () => {
-    navigate('/payments/receive');
+    navigate('/payments');
   };
 
   return (

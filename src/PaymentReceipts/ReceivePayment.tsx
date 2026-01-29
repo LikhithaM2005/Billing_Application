@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { saveReceipt, generateReceiptNumber } from './receiptStorage';
 import { getInvoices, updateInvoicePayment } from './invoiceStorage';
@@ -8,6 +8,12 @@ const ReceivePayment = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
+
+  // Searchable Dropdown State
+  const [invoiceSearch, setInvoiceSearch] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [allInvoices, setAllInvoices] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     invoice: '',
@@ -20,6 +26,10 @@ const ReceivePayment = () => {
   });
 
   useEffect(() => {
+    // Load all invoices for the searchable dropdown
+    const invoices = getInvoices();
+    setAllInvoices(invoices);
+
     // If data passed via state (from Invoice Detail)
     if (location.state) {
       setFormData(prev => ({
@@ -28,6 +38,7 @@ const ReceivePayment = () => {
         customer: location.state.customer,
         paymentAmount: location.state.balance ? location.state.balance.toString() : ''
       }));
+      setInvoiceSearch(location.state.invoiceNo);
       return;
     }
 
@@ -43,10 +54,43 @@ const ReceivePayment = () => {
           customer: selectedInvoice.customerName,
           paymentAmount: selectedInvoice.balanceAmount.toString()
         }));
+        setInvoiceSearch(selectedInvoice.invoiceNumber);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, location.state]);
+
+  // Click outside listener for dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  /* ---------- SEARCH LOGIC ---------- */
+  const filteredInvoices = useMemo(() => {
+    // Only show invoices that have a balance
+    return allInvoices.filter(inv =>
+      inv.balanceAmount > 0 &&
+      (inv.invoiceNumber.toLowerCase().includes(invoiceSearch.toLowerCase()) ||
+        inv.customerName.toLowerCase().includes(invoiceSearch.toLowerCase()))
+    );
+  }, [allInvoices, invoiceSearch]);
+
+  const selectInvoice = (inv: any) => {
+    setFormData(prev => ({
+      ...prev,
+      invoice: inv.invoiceNumber,
+      customer: inv.customerName,
+      paymentAmount: inv.balanceAmount.toString()
+    }));
+    setInvoiceSearch(inv.invoiceNumber);
+    setShowDropdown(false);
+  };
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -133,9 +177,9 @@ const ReceivePayment = () => {
           <h3 style={{ fontSize: '1.1rem', margin: 0, color: '#1B5E20' }}>Payment Details</h3>
           <button
             type="button"
-            className="secondary-btn"
+            className="action-btn-view"
             onClick={() => navigate('/payments/receipts')}
-            style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+            style={{ padding: '8px 16px', fontSize: '0.85rem', width: 'auto' }}
           >
             View All Receipts
           </button>
@@ -143,15 +187,76 @@ const ReceivePayment = () => {
 
         <div className="form-group">
           <label className="form-label">Invoice Number</label>
-          <input
-            type="text"
-            name="invoice_readonly"
-            value={formData.invoice}
-            className="form-input"
-            readOnly
-            style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed', fontWeight: 'bold' }}
-            placeholder="Pick an invoice above"
-          />
+          <div style={{ position: 'relative' }} ref={dropdownRef}>
+            <input
+              type="text"
+              placeholder="Search by Invoice # or Customer..."
+              value={invoiceSearch}
+              onFocus={() => setShowDropdown(true)}
+              onChange={(e) => {
+                setInvoiceSearch(e.target.value);
+                setShowDropdown(true);
+                // Clear the selection if user types something else
+                if (formData.invoice !== e.target.value) {
+                  setFormData(prev => ({ ...prev, invoice: '', customer: '', paymentAmount: '' }));
+                }
+              }}
+              className={`form-input ${errors.invoice ? 'error' : ''}`}
+            />
+
+            {showDropdown && (
+              <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                background: '#ffffff',
+                border: '1px solid #D1D5DB',
+                borderRadius: '8px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                zIndex: 1000,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                marginTop: '4px'
+              }}>
+                {filteredInvoices.length > 0 ? (
+                  filteredInvoices.map((inv) => (
+                    <div
+                      key={inv.id}
+                      style={{
+                        padding: '10px 12px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        borderBottom: '1px solid #f3f4f6'
+                      }}
+                      className="dropdown-item-custom"
+                      onClick={() => selectInvoice(inv)}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLDivElement).style.backgroundColor = '#F3F4F6';
+                        (e.target as HTMLDivElement).style.color = '#2E7D32';
+                        (e.target as HTMLDivElement).style.fontWeight = '600';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLDivElement).style.backgroundColor = 'transparent';
+                        (e.target as HTMLDivElement).style.color = 'inherit';
+                        (e.target as HTMLDivElement).style.fontWeight = 'normal';
+                      }}
+                    >
+                      <div style={{ fontWeight: 600 }}>{inv.invoiceNumber}</div>
+                      <div style={{ fontSize: '12px', color: '#6b7280' }}>{inv.customerName} - Balance: ₹{inv.balanceAmount}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ padding: '10px 12px', color: '#9CA3AF', fontSize: '14px', fontStyle: 'italic' }}>
+                    No pending invoices found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {errors.invoice && (
+            <div className="error-message">{errors.invoice}</div>
+          )}
         </div>
 
         <div className="form-group">
