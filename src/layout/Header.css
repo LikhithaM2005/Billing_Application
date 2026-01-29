@@ -4,14 +4,17 @@
     justify-content: space-between;
     gap: 24px;
     background: white;
-    padding: 24px 32px;
-    margin: -32px 0 32px 0;
+    padding: 16px 32px;
     border-bottom: 1px solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 0;
 }
 
 .header-left {
-    margin-top: 12px;
-    margin-left: 3px;
+    display: flex;
+    flex-direction: column;
 }
 
 .header .heading {

@@ -1,4 +1,4 @@
-import { Customer } from "../types/loan";
+import type { Customer } from "../types/loan";
 
 type Props = {
   customer: Customer;

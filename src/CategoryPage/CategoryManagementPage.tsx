@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import "../App.css";
 import "./CategoryManagementPage.css";
 
-/* ================= CATEGORY TYPES ================= */
+/* ================= CATEGORY TYPES (INLINED) ================= */
 
+/**
+ * Category returned from backend
+ */
 export interface Category {
   id: number;
   name: string;
@@ -10,12 +15,18 @@ export interface Category {
   description: string;
 }
 
+/**
+ * Payload used when creating a category
+ */
 export interface CategoryCreate {
   name: string;
   code: string;
   description: string;
 }
 
+/**
+ * Payload used when updating a category
+ */
 export type CategoryUpdate = Category;
 
 /* ================= PAGE TYPES ================= */
@@ -105,33 +116,43 @@ export default function CategoryManagementPage() {
   /* ================= UI ================= */
 
   return (
-    <>
+    <div className="category-container">
       {mode === "list" && (
         <>
+          {/* Header */}
           <div className="category-header">
-            <input
-              className="category-search"
-              placeholder="Search by Category Code"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+            <h2 className="category-title">Category Management</h2>
 
-            <button
-              className="primary"
-              onClick={() => {
-                setSelected({
-                  id: Date.now(),
-                  name: "",
-                  code: generateNextCode(categories),
-                  description: "",
-                });
-                setMode("add");
-              }}
-            >
-              + Add Category
-            </button>
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+                <FiSearch style={{ position: 'absolute', left: '12px', color: '#6b7280', fontSize: '14px', pointerEvents: 'none' }} />
+                <input
+                  className="category-search"
+                  placeholder="Search by Category Code"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  style={{ paddingLeft: '36px' }}
+                />
+              </div>
+
+              <button
+                className="primary"
+                onClick={() => {
+                  setSelected({
+                    id: Date.now(),
+                    name: "",
+                    code: generateNextCode(categories),
+                    description: "",
+                  });
+                  setMode("add");
+                }}
+              >
+                + Add Category
+              </button>
+            </div>
           </div>
 
+          {/* Table */}
           <div className="category-card">
             <table className="category-table">
               <thead>
@@ -157,9 +178,9 @@ export default function CategoryManagementPage() {
                     <td>{c.updated_at}</td>
                     <td align="right">
                       <div className="action-group">
-                        <button onClick={() => { setSelected(c); setMode("view"); }}>View</button>
-                        <button onClick={() => { setSelected(c); setMode("edit"); }}>Edit</button>
-                        <button onClick={() => handleDelete(c.id)}>Delete</button>
+                        <button className="btn-view" onClick={() => { setSelected(c); setMode("view"); }}>View</button>
+                        <button className="btn-edit" onClick={() => { setSelected(c); setMode("edit"); }}>Edit</button>
+                        <button className="btn-delete" onClick={() => handleDelete(c.id)}>Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -178,7 +199,7 @@ export default function CategoryManagementPage() {
           onSave={handleSave}
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -195,21 +216,9 @@ function CategoryForm({
   onCancel: () => void;
   onSave: (c: CategoryWithDates) => void;
 }) {
-
-  const [form, setForm] = useState<CategoryWithDates>(() => {
-    if (data) return data;
-
-    const today = new Date().toISOString().slice(0, 10);
-
-    return {
-      id: Date.now(),
-      name: "",
-      code: "",
-      description: "",
-      created_at: today,
-      updated_at: today,
-    };
-  });
+  const [form, setForm] = useState<CategoryWithDates>(
+    data ?? { id: Date.now(), name: "", code: "", description: "" }
+  );
 
   const readOnly = mode === "view";
 
@@ -235,6 +244,7 @@ function CategoryForm({
           disabled={readOnly}
           value={form.description}
           onChange={e => setForm({ ...form, description: e.target.value })}
+          rows={3}
         />
 
         <div className="form-actions">

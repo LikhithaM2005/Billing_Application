@@ -1,18 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
+import type { FormEvent } from "react";
 import {
   FiPlus,
-  FiSearch,
   FiEye,
   FiEdit,
-  FiTrash2,
-  FiFilter,
   FiPhone,
   FiMail,
+  FiSearch,
 } from "react-icons/fi";
-import Layout from "../layout/Layout";
+
 import { useDashboard } from "../DashboardPage/DashboardContext";
-import type { CustomerType, UserRole } from "../DashboardPage/DashboardContext";
+import type { CustomerType } from "../DashboardPage/DashboardContext";
 import "./CustomerManagement.css";
 
 
@@ -24,7 +23,6 @@ export default function CustomerManagement() {
   const {
     customers,
     userRole,
-    setUserRole,
     addCustomer,
     updateCustomer,
     removeCustomer,
@@ -244,17 +242,17 @@ export default function CustomerManagement() {
   // Render List View
   if (viewMode === "list") {
     return (
-      <Layout>
+      <>
         <section className="page-hero panel" style={{ alignItems: 'center' }}>
           <div className="filter-group wide" style={{ flex: 1, marginBottom: 0 }}>
-            <div className="input-with-icon">
-              <FiSearch className="input-icon" />
+            <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', width: '100%' }}>
+              <FiSearch style={{ position: 'absolute', left: '12px', color: '#6b7280', fontSize: '14px', pointerEvents: 'none' }} />
               <input
                 type="text"
                 placeholder="Search by name, phone, or customer ID"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ background: 'white' }}
+                style={{ background: 'white', width: '100%', padding: '10px 12px 10px 36px', borderRadius: '10px', border: '1px solid var(--border)' }}
               />
             </div>
           </div>
@@ -292,44 +290,40 @@ export default function CustomerManagement() {
           <div className="filter-row" style={{ gridTemplateColumns: '1fr 1fr' }}>
             <div className="filter-group">
               <label>Customer type</label>
-              <div className="input-with-icon">
-                <FiFilter className="input-icon" />
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value as "all" | CustomerType)}
-                >
-                  <option value="all">All Customers</option>
-                  <option value="Individual">Individual</option>
-                  <option value="Business">Business</option>
-                </select>
-              </div>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value as "all" | CustomerType)}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border)', background: 'white' }}
+              >
+                <option value="all">All Customers</option>
+                <option value="Individual">Individual</option>
+                <option value="Business">Business</option>
+              </select>
             </div>
             <div className="filter-group">
               <label>Status</label>
-              <div className="input-with-icon">
-                <FiFilter className="input-icon" />
-                <select
-                  value={statusFilter}
-                  onChange={(e) =>
-                    setStatusFilter(
-                      e.target.value as "all" | "active" | "pending" | "frequent"
-                    )
-                  }
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="pending">Pending dues</option>
-                  <option value="frequent">Frequent customers</option>
-                </select>
-              </div>
+              <select
+                value={statusFilter}
+                onChange={(e) =>
+                  setStatusFilter(
+                    e.target.value as "all" | "active" | "pending" | "frequent"
+                  )
+                }
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--border)', background: 'white' }}
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending dues</option>
+                <option value="frequent">Frequent customers</option>
+              </select>
             </div>
           </div>
         </section>
 
         <section className="panel list-panel">
-          <div className="table-header">
+          <div className="panel-header">
             <div>
-              <h4>Customer List</h4>
+              <h3>Customer List</h3>
               <p className="muted">Track balances and quick actions</p>
             </div>
             <div className="pill stat-pill">
@@ -398,17 +392,17 @@ export default function CustomerManagement() {
                         </td>
                         <td>
                           <div className="table-actions">
-                            <button className="ghost-btn" onClick={() => handleView(customer.id)}>
+                            <button className="btn-view" onClick={() => handleView(customer.id)}>
                               View
                             </button>
                             {(userRole === "Admin" || userRole === "Staff") && (
-                              <button className="ghost-btn" onClick={() => handleEdit(customer.id)}>
+                              <button className="btn-edit" onClick={() => handleEdit(customer.id)}>
                                 Edit
                               </button>
                             )}
                             {userRole === "Admin" && (
                               <button
-                                className="ghost-btn danger"
+                                className="btn-delete"
                                 onClick={() => handleDelete(customer.id)}
                               >
                                 Delete
@@ -424,26 +418,26 @@ export default function CustomerManagement() {
             </table>
           </div>
         </section>
-      </Layout>
+      </>
     );
   }
 
   // Render Add/Edit Form
   if (viewMode === "add" || viewMode === "edit") {
     return (
-      <Layout>
+      <>
         <section className="panel">
           <div className="panel-header">
             <h3>{viewMode === "add" ? "Add Customer" : "Edit Customer"}</h3>
           </div>
 
-          <form onSubmit={handleSubmit} className="customer-form form-grid">
+          <form onSubmit={handleSubmit} className="form-grid">
             {/* Basic Details */}
             <div className="form-section-title">Basic Details</div>
 
             <div className="form-row">
               <label>
-                <span>Name *</span>
+                <span>Name <span className="required">*</span></span>
                 <input
                   type="text"
                   value={formData.name}
@@ -455,7 +449,7 @@ export default function CustomerManagement() {
                 />
               </label>
               <label>
-                <span>Email *</span>
+                <span>Email <span className="required">*</span></span>
                 <input
                   type="email"
                   value={formData.email}
@@ -470,7 +464,7 @@ export default function CustomerManagement() {
 
             <div className="form-row">
               <label>
-                <span>Phone *</span>
+                <span>Phone <span className="required">*</span></span>
                 <input
                   type="tel"
                   value={formData.phone}
@@ -496,7 +490,7 @@ export default function CustomerManagement() {
 
             <div className="form-row">
               <label>
-                <span>Customer Type *</span>
+                <span>Customer Type <span className="required">*</span></span>
                 <select
                   value={formData.customerType}
                   onChange={(e) =>
@@ -600,9 +594,9 @@ export default function CustomerManagement() {
                   maxLength={10}
                 />
               </label>
-              {formData.customerType === "Business" && (
+              {formData.customerType === "Business" ? (
                 <label>
-                  <span>GST/Tax ID *</span>
+                  <span>GST/Tax ID <span className="required">*</span></span>
                   <input
                     type="text"
                     value={formData.gstTaxId}
@@ -613,6 +607,8 @@ export default function CustomerManagement() {
                     required
                   />
                 </label>
+              ) : (
+                <div /> /* Placeholder for 3rd column if business info not present */
               )}
             </div>
 
@@ -699,7 +695,7 @@ export default function CustomerManagement() {
             </div>
           </form>
         </section>
-      </Layout >
+      </>
     );
   }
 
@@ -713,7 +709,7 @@ export default function CustomerManagement() {
     );
 
     return (
-      <Layout>
+      <>
         <section className="panel">
           <div className="panel-header">
             <h3>View Customer</h3>
@@ -933,7 +929,7 @@ export default function CustomerManagement() {
           </div>
 
         </section>
-      </Layout>
+      </>
     );
   }
 

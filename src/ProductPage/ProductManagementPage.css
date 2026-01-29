@@ -1,39 +1,73 @@
+/* Main Container */
+.pm-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 0 32px;
+}
+
 .pm-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
+/* Inputs */
 .pm-search {
   width: 320px;
-  padding: 8px 10px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.pm-search:focus {
+  outline: none;
+  border-color: #1B5E20;
+  box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1);
 }
 
 .pm-btn-group {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
+/* Cards */
 .pm-card {
   background: #fff;
-  padding: 20px;
-  border-radius: 18px;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
 }
 
+/* Table */
 .pm-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.pm-table thead tr {
-  background: #e9f5ea;
-  color: #1b5e20;
+.pm-table thead th {
+  background: #E8F5E9;
+  padding: 14px;
+  text-align: left;
+  color: #1B5E20;
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: none;
 }
 
-.pm-table th,
 .pm-table td {
-  padding: 10px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 14px;
+  border-bottom: 1px solid #E5F5E0;
+  color: #0F172A;
+  font-size: 14px;
 }
 
 .right {
@@ -42,10 +76,11 @@
 
 .pm-actions {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   justify-content: flex-end;
 }
 
+/* FORM */
 .pm-form-wrapper {
   display: flex;
   justify-content: center;
@@ -55,73 +90,118 @@
 .pm-form-card {
   width: 760px;
   background: #fff;
-  padding: 30px;
-  border-radius: 18px;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.pm-form-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1B5E20;
+  margin-top: 0;
+  margin-bottom: 24px;
 }
 
 .pm-form-card label {
   font-weight: 600;
-  margin-top: 12px;
+  color: #374151;
+  margin-top: 16px;
   display: block;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
 }
 
 .pm-form-card input,
 .pm-form-card textarea {
   width: 100%;
-  padding: 8px 10px;
-  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.15s;
+  background-color: #fff;
+}
+
+.pm-form-card input:disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.pm-form-card input:focus,
+.pm-form-card textarea:focus {
+  outline: none;
+  border-color: #1B5E20;
+  box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1);
 }
 
 .pm-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 28px;
 }
 
-/* Button Styles */
-.pm-table button,
-.pm-btn-group button {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid #A1D99B;
-  background: #E5F5E0;
-  font-size: 13px;
-  font-weight: 500;
+/* Button Styles - Standardized */
+button {
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  border: 1px solid transparent;
   transition: all 0.2s ease;
- 
-}
-
-.pm-table button:hover,
-.pm-btn-group button:hover {
-  background: #C8E6C9;
-  border-color: #2E7D32;
-}
-
-.pm-table button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+  font-size: 0.9rem;
 }
 
 .primary {
-  background: #2E7D32 !important;
-  color: white !important;
-  border-color: #2E7D32 !important;
-}
-
-.primary:hover {
   background: #1B5E20 !important;
+  color: #ffffff !important;
   border-color: #1B5E20 !important;
 }
 
+.primary:hover {
+  background: #14532d !important;
+  border-color: #14532d !important;
+}
+
 .secondary {
-  background: #F3F4F6 !important;
+  background: #ffffff !important;
   color: #374151 !important;
-  border-color: #D1D5DB !important;
+  border-color: #d1d5db !important;
 }
 
 .secondary:hover {
-  background: #E5E7EB !important;
-  border-color: #9CA3AF !important;
+  background: #f9fafb !important;
+  border-color: #9ca3af !important;
+}
+
+/* Specialized Buttons */
+.btn-view,
+.btn-edit {
+  background: #E5F5E0 !important;
+  border: 1px solid #A1D99B !important;
+  color: #1B5E20 !important;
+}
+
+.btn-view:hover,
+.btn-edit:hover {
+  background: #C8E6C9 !important;
+  border-color: #2E7D32 !important;
+}
+
+.btn-delete {
+  background: #FEE2E2 !important;
+  border: 1px solid #FCA5A5 !important;
+  color: #991B1B !important;
+}
+
+.btn-delete:hover {
+  background: #FECACA !important;
+  border-color: #EF4444 !important;
+}
+
+/* Fix table row styles inheritance */
+.pm-table tbody tr:hover {
+  background-color: #f9fafb;
 }

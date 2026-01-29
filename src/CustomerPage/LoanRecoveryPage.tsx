@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 
 import {
   FiArrowLeft,
@@ -11,7 +12,9 @@ import {
   FiUser,
   FiClock,
 } from "react-icons/fi";
-import Layout from "../layout/Layout";
+
+import "./LoanRecovery.css";
+
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../DashboardPage/DashboardContext";
 
@@ -63,16 +66,24 @@ export default function LoanRecovery() {
   };
 
   return (
-    <Layout>
+    <>
       <section className="panel">
 
 
-        <form onSubmit={handleSubmit} className="customer-form">
+        <div className="panel-header">
+          <h3>Record Loan Recovery</h3>
+        </div>
+
+        <form onSubmit={handleSubmit} className="form-grid">
+          <div className="form-section-title">
+            <FiDollarSign /> Recovery Details
+          </div>
+
           {/* LOAN ID */}
-          <div className="form-row">
+          <div className="form-group">
             <label>
               <span>
-                <FiHash /> Loan ID *
+                <FiHash /> Loan ID <span className="required">*</span>
               </span>
               <input
                 type="text"
@@ -87,10 +98,10 @@ export default function LoanRecovery() {
           </div>
 
           {/* AMOUNT + RECOVERY DATE */}
-          <div className="form-row">
+          <div className="form-group">
             <label>
               <span>
-                <FiDollarSign /> Amount Recovered *
+                <FiDollarSign /> Amount Recovered <span className="required">*</span>
               </span>
               <input
                 type="number"
@@ -103,7 +114,9 @@ export default function LoanRecovery() {
                 required
               />
             </label>
+          </div>
 
+          <div className="form-group">
             <label>
               <span>
                 <FiCalendar /> Recovered At
@@ -119,7 +132,7 @@ export default function LoanRecovery() {
           </div>
 
           {/* PAYMENT + TRANSACTION */}
-          <div className="form-row">
+          <div className="form-group">
             <label>
               <span>
                 <FiCreditCard /> Payment Method
@@ -141,7 +154,9 @@ export default function LoanRecovery() {
                 <option value="Card">Card</option>
               </select>
             </label>
+          </div>
 
+          <div className="form-group">
             <label>
               <span>
                 <FiHash /> Transaction ID
@@ -158,8 +173,8 @@ export default function LoanRecovery() {
           </div>
 
           {/* REMARKS */}
-          <div className="form-row">
-            <label className="full-width">
+          <div className="form-group full-width">
+            <label>
               <span>
                 <FiFileText /> Remarks
               </span>
@@ -175,40 +190,46 @@ export default function LoanRecovery() {
           </div>
 
           {/* AUDIT INFORMATION */}
-          <div className="profile-section">
-            <h4>Audit Information</h4>
-
-            <div className="form-row">
-              <label>
-                <span>
-                  <FiUser /> Created By
-                </span>
-                <input type="text" value={formData.createdBy} disabled />
-              </label>
-
-              <label>
-                <span>
-                  <FiClock /> Created At
-                </span>
-                <input
-                  type="text"
-                  value={new Date(formData.createdAt).toLocaleString()}
-                  disabled
-                />
-              </label>
+          <div className="audit-section">
+            <div className="form-section-title">
+              <FiClock /> Audit Information
             </div>
 
-            <div className="form-row">
-              <label>
-                <span>
-                  <FiClock /> Updated At
-                </span>
-                <input
-                  type="text"
-                  value={new Date(formData.updatedAt).toLocaleString()}
-                  disabled
-                />
-              </label>
+            <div className="form-grid" style={{ marginTop: '16px' }}>
+              <div className="form-group">
+                <label>
+                  <span>
+                    <FiUser /> Created By
+                  </span>
+                  <input type="text" value={formData.createdBy} disabled />
+                </label>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <span>
+                    <FiClock /> Created At
+                  </span>
+                  <input
+                    type="text"
+                    value={new Date(formData.createdAt).toLocaleString()}
+                    disabled
+                  />
+                </label>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <span>
+                    <FiClock /> Updated At
+                  </span>
+                  <input
+                    type="text"
+                    value={new Date(formData.updatedAt).toLocaleString()}
+                    disabled
+                  />
+                </label>
+              </div>
             </div>
           </div>
 
@@ -232,6 +253,6 @@ export default function LoanRecovery() {
           </div>
         </form>
       </section>
-    </Layout>
+    </>
   );
 }

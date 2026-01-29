@@ -1,13 +1,40 @@
 import { useDashboard } from "./DashboardContext";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
+import { getInvoices } from "../PaymentReceipts/invoiceStorage";
 
 export default function RevenueChart() {
   const { customers } = useDashboard();
+  const [invoices, setInvoices] = useState(getInvoices());
+
+  // Listen for invoice updates
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setInvoices(getInvoices());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Poll for updates every 2 seconds to catch same-tab changes
+    const interval = setInterval(() => {
+      setInvoices(getInvoices());
+    }, 2000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Aggregate revenue by date (simplified for the last 7 unique dates or transactions)
   const chartData = useMemo(() => {
-    // Flatten all invoices
-    const allInvoices = customers.flatMap(c => c.purchaseHistory);
+    // Use invoices from storage for most up-to-date data
+    const allInvoices = invoices.length > 0
+      ? invoices.map(inv => ({
+        date: inv.date,
+        amount: inv.paidAmount, // Show paid amounts for revenue chart
+      }))
+      : customers.flatMap(c => c.purchaseHistory);
+
     // Sort by date ascending
     allInvoices.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -23,7 +50,7 @@ export default function RevenueChart() {
       value: inv.amount,
       height: (inv.amount / maxAmount) * 100
     }));
-  }, [customers]);
+  }, [customers, invoices]);
 
   return (
     <section className="panel">

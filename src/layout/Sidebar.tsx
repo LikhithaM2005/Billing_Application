@@ -1,14 +1,15 @@
 import { FiSettings } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
+
 const navItems = [
-  { label: "Dashboard", icon: "🏠", path: "/dashboard" },
+  { label: "Dashboard", icon: "📊", path: "/dashboard" },
   { label: "Customer Management", icon: "👥", path: "/customers" },
-  { label: "Category Management", icon: "📦", path: "/categories" },
-  { label: "Product Management", icon: "🧾", path: "/products" },
-  { label: "Invoice Management", icon: "📄", path: "/invoices" },
+  { label: "Category Management", icon: "📁", path: "/categories" },
+  { label: "Product Management", icon: "📦", path: "/products" },
+  { label: "Invoice Management", icon: "🧾", path: "/invoices" },
   { label: "Payment & Receipts", icon: "💳", path: "/payments" },
-  { label: "Reports", icon: "📊", path: "/reports" },
+  { label: "Reports", icon: "📈", path: "/reports" },
 ];
 export default function Sidebar() {
   const navigate = useNavigate();

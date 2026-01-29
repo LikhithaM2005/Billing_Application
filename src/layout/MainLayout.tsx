@@ -4,16 +4,11 @@ import Sidebar from "./Sidebar";
 
 export default function MainLayout() {
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
+    <div className="app-container" style={{ display: "flex", minHeight: "100vh", width: "100%" }}>
       <Sidebar />
-
-      {/* Main area */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="main-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         <Header />
-
-        {/* Page content */}
-        <main style={{ padding: "32px" }}>
+        <main className="main-content" style={{ padding: "24px 32px 32px 32px", flex: 1, overflowY: "auto" }}>
           <Outlet />
         </main>
       </div>

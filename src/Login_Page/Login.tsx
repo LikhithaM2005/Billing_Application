@@ -68,7 +68,8 @@ const Login = () => {
           <span className="input-icon">✉</span>
           <input
             type="email"
-            placeholder="Enter email address"
+            placeholder="Enter your email address"
+            aria-label="Email address"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -85,7 +86,8 @@ const Login = () => {
           <span className="input-icon">🔒</span>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Enter password"
+            placeholder="Enter your password"
+            aria-label="Password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);

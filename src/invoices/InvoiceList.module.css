@@ -98,9 +98,11 @@
 
 .table th {
   background: #E8F5E9;
+  /* Light green background */
   padding: 14px;
   text-align: left;
   color: #1B5E20;
+  /* Dark green text */
   font-weight: 600;
   font-size: 14px;
 }
@@ -199,4 +201,9 @@
   .filters {
     grid-template-columns: 1fr;
   }
+}
+
+.balanceRed {
+  color: #dc2626 !important;
+  font-weight: 600;
 }

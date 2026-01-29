@@ -1,7 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./InvoiceDetail.module.css";
+import { getInvoices, type Invoice } from "../PaymentReceipts/invoiceStorage";
+import { useEffect, useState } from "react";
 
-type InvoiceStatus = "Pending" | "Paid" | "Cancelled";
+// Not using the previous InvoiceStatus type because invoiceStorage uses lowercase
+// type InvoiceStatus = "Pending" | "Paid" | "Cancelled";
 
 interface InvoiceItem {
   description: string;
@@ -14,58 +17,57 @@ interface InvoiceItem {
 const InvoiceDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [invoiceData, setInvoiceData] = useState<Invoice | null>(null);
 
-  // 🔹 Dummy invoice (replace with API later)
-  const invoice = {
-    invoiceNo: `INV-00${id}`,
-    customer: "ABC Pvt Ltd",
-    issueDate: "2026-01-12",
-    dueDate: "2026-01-20",
-    status: "Pending" as InvoiceStatus,
-    items: [
-      {
-        description: "Soap",
-        quantity: 3,
-        unitPrice: 56,
-        discount: 10,
-        tax: 5,
-      },
-      {
-        description: "Shampoo",
-        quantity: 2,
-        unitPrice: 120,
-        discount: 0,
-        tax: 5,
-      },
-    ],
-  };
+  useEffect(() => {
+    const invoices = getInvoices();
+    // Try to match by ID or Invoice Number
+    const found = invoices.find(inv => inv.id === id || inv.invoiceNumber === id || inv.invoiceNumber === `INV-00${id}`);
+    if (found) {
+      setInvoiceData(found);
+    }
+  }, [id]);
+
+  if (!invoiceData) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <h3>Invoice not found</h3>
+          <button onClick={() => navigate("/invoices")}>Back to List</button>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔹 Mock items for now since storage only stores totals
+  // In a real app, items would be in storage too.
+  const items: InvoiceItem[] = [
+    {
+      description: "Services / Product",
+      quantity: 1,
+      unitPrice: invoiceData.totalAmount, // simplistic matching
+      discount: 0,
+      tax: 0,
+    }
+  ];
 
   /* ---------------- CALCULATIONS ---------------- */
-
-  const lineTotal = (item: InvoiceItem) => {
-    const base = item.quantity * item.unitPrice;
-    const discountAmt = (base * item.discount) / 100;
-    return base - discountAmt;
-  };
-
-  const taxAmount = (item: InvoiceItem) =>
-    (lineTotal(item) * item.tax) / 100;
-
-  const subtotal = invoice.items.reduce(
-    (sum, i) => sum + lineTotal(i),
-    0
-  );
-
-  const totalTax = invoice.items.reduce(
-    (sum, i) => sum + taxAmount(i),
-    0
-  );
-
-  const grandTotal = subtotal + totalTax;
+  // Use stored totals
+  const subtotal = invoiceData.totalAmount;
+  const totalTax = 0; // consistent with simple storage
+  const grandTotal = invoiceData.totalAmount;
 
   /* ---------------- ACTIONS ---------------- */
 
-  const receivePayment = () => alert("Receive Payment (backend later)");
+  const receivePayment = () => {
+    navigate(`/payments/receive/${invoiceData.id}`, {
+      state: {
+        invoiceNo: invoiceData.invoiceNumber,
+        customer: invoiceData.customerName,
+        balance: invoiceData.balanceAmount
+      }
+    });
+  };
   const cancelInvoice = () => alert("Cancel Invoice (backend later)");
 
   return (
@@ -76,26 +78,25 @@ const InvoiceDetail = () => {
       <div className={styles.card}>
         <div className={styles.headerRow}>
           <div>
-            <h3>{invoice.invoiceNo}</h3>
-            <p className={styles.customer}>{invoice.customer}</p>
+            <h3>{invoiceData.invoiceNumber}</h3>
+            <p className={styles.customer}>{invoiceData.customerName}</p>
           </div>
 
           <span
-            className={`${styles.status} ${
-              invoice.status === "Paid"
-                ? styles.paid
-                : invoice.status === "Pending"
+            className={`${styles.status} ${invoiceData.status === "paid"
+              ? styles.paid
+              : invoiceData.status === "pending"
                 ? styles.pending
                 : styles.cancelled
-            }`}
+              }`}
           >
-            {invoice.status}
+            {invoiceData.status.toUpperCase()}
           </span>
         </div>
 
         <div className={styles.meta}>
-          <p><strong>Issue Date:</strong> {invoice.issueDate}</p>
-          <p><strong>Due Date:</strong> {invoice.dueDate}</p>
+          <p><strong>Issue Date:</strong> {invoiceData.date}</p>
+          <p><strong>Due Date:</strong> {invoiceData.dueDate}</p>
         </div>
       </div>
 
@@ -115,7 +116,7 @@ const InvoiceDetail = () => {
             </tr>
           </thead>
           <tbody>
-            {invoice.items.map((item, i) => (
+            {items.map((item, i) => (
               <tr key={i}>
                 <td>{item.description}</td>
                 <td>{item.quantity}</td>
@@ -123,7 +124,7 @@ const InvoiceDetail = () => {
                 <td>{item.discount}%</td>
                 <td>{item.tax}%</td>
                 <td>
-                  ₹ {(lineTotal(item) + taxAmount(item)).toFixed(2)}
+                  ₹ {item.unitPrice.toFixed(2)}
                 </td>
               </tr>
             ))}
@@ -142,6 +143,10 @@ const InvoiceDetail = () => {
             <span>Grand Total</span>
             <span>₹ {grandTotal.toFixed(2)}</span>
           </div>
+          <div className={styles.grand} style={{ marginTop: '10px', fontSize: '16px', color: '#EF4444' }}>
+            <span>Balance Due</span>
+            <span>₹ {invoiceData.balanceAmount.toFixed(2)}</span>
+          </div>
         </div>
       </div>
 
@@ -150,13 +155,13 @@ const InvoiceDetail = () => {
         <button onClick={() => navigate("/invoices")}>Back</button>
 
         <div>
-          {invoice.status === "Pending" && (
+          {(invoiceData.status === "pending" || invoiceData.status === "partially_paid") && (
             <>
               <button onClick={receivePayment} className={styles.primary}>
                 Receive Payment
               </button>
               <button
-                onClick={() => navigate(`/invoices/${id}/return`)}
+                onClick={() => navigate(`/invoices/${invoiceData.id}/return`)}
                 className={styles.secondary}
               >
                 Create Return

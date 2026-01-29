@@ -190,61 +190,6 @@ button {
     gap: 20px;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    background: var(--surface);
-    padding: 16px 24px;
-    margin: -24px -24px 0 -24px;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-}
-
-.heading {
-    margin: 4px 0 0;
-}
-
-.eyebrow {
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 12px;
-    color: var(--muted);
-}
-
-.muted {
-    margin: 2px 0 0;
-    color: var(--muted);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.search {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 12px;
-    min-width: 240px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-
-.search input {
-    border: none;
-    outline: none;
-    width: 100%;
-    font: inherit;
-}
 
 .icon-button {
     position: relative;
@@ -318,29 +263,36 @@ button {
 
 .stat-card {
     display: flex;
-    gap: 14px;
+    align-items: center;
+    gap: 16px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .stat-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(27, 94, 32, 0.12), rgba(27, 94, 32, 0.18));
-    color: #0f172a;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #f0fdf4;
+    color: var(--primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.stat-content .eyebrow {
+    margin: 0 0 4px 0;
 }
 
 .stat-content h3 {
-    margin: 6px 0;
-    font-size: 22px;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
 }
 
 .stat-value {
@@ -403,34 +355,46 @@ button {
 
 .quick-card {
     text-decoration: none;
-    color: #ffffff;
+    color: var(--text);
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    padding: 16px;
-    border-radius: 14px;
-    background: #E6F2EA;
-    border: 1px solid #1b5e20;
+    padding: 20px;
+    border-radius: 16px;
+    background: #E8F5E9;
+    /* Light green background */
+    border: 1px solid #C8E6C9;
+    /* Consistent light green border */
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .quick-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 32px rgba(27, 94, 32, 0.45);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
 }
 
 .quick-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #ffffff;
+    /* White background for icons on light green cards */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
+    color: var(--primary);
+    font-size: 20px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.quick-card:hover .quick-icon {
+    background: var(--primary);
+    color: white;
 }
 
 .chart-placeholder {
@@ -737,6 +701,12 @@ button {
     top: 50%;
     transform: translateY(-50%);
     color: var(--muted);
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .list-panel {
@@ -765,8 +735,9 @@ button {
 }
 
 .customer-table.modern th {
-    color: #0f172a;
+    color: #1B5E20;
     font-size: 13px;
+    font-weight: 700;
 }
 
 .customer-table.modern tbody tr:hover {
@@ -943,15 +914,16 @@ button {
 }
 
 .customer-table thead {
-    background: #f8fafc;
-    border-bottom: 2px solid var(--border);
+    background: #E8F5E9;
+    /* Light green background */
 }
 
 .customer-table th {
     padding: 12px;
     text-align: left;
-    font-weight: 600;
-    color: #111827;
+    font-weight: 700;
+    color: #1B5E20;
+    /* Dark green text */
     white-space: nowrap;
 }
 

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import CustomerForm from "./CustomerForm";
 import { LoanForm } from "./LoanForm";
-import { Customer } from "../types/loan";
-import Layout from "../layout/Layout";
+import type { Customer } from "../types/loan";
+
 
 export default function AddCustomer() {
   const [showLoan, setShowLoan] = useState<boolean>(false);
@@ -18,7 +18,7 @@ export default function AddCustomer() {
   });
 
   return (
-    <Layout>
+    <>
       <div style={{ padding: "20px" }}>
         <h2>Add Customer</h2>
 
@@ -45,6 +45,6 @@ export default function AddCustomer() {
           </div>
         )}
       </div>
-    </Layout>
+    </>
   );
 }

@@ -33,7 +33,7 @@
 .input-with-icon input,
 .input-with-icon select {
     width: 100%;
-    padding: 12px 12px 12px 40px;
+    padding: 10px 12px 10px 32px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background: white;
@@ -42,10 +42,38 @@
 
 .input-icon {
     position: absolute;
-    left: 12px;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--muted);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+}
+
+.input-icon svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .view-section {
@@ -104,14 +132,14 @@
 }
 
 .history-table thead {
-    background: var(--primary);
-    color: white;
+    background: #E8F5E9;
+    color: #1B5E20;
 }
 
 .history-table th {
     padding: 10px 12px;
     text-align: left;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
 }
@@ -121,8 +149,158 @@
     border-bottom: 1px solid var(--border);
 }
 
+/* Button Styles - Standardized */
+.btn-view,
+.btn-edit {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #E5F5E0 !important;
+    border: 1px solid #A1D99B !important;
+    color: #1B5E20 !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.btn-view:hover,
+.btn-edit:hover {
+    background: #C8E6C9 !important;
+    border-color: #2E7D32 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
+}
+
+.btn-delete {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #FEE2E2 !important;
+    border: 1px solid #FCA5A5 !important;
+    color: #991B1B !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete:hover {
+    background: #FECACA !important;
+    border-color: #EF4444 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(153, 27, 27, 0.15);
+}
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
 @media (max-width: 900px) {
     .customer-page {
         grid-template-columns: minmax(0, 1fr);
     }
+}
+
+/* Add/Edit Form Layout Styles - Refined 3-Column Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    align-items: start;
+}
+
+.customer-form {
+    display: contents;
+    /* Allows children to participate in form-grid */
+}
+
+.form-row {
+    display: contents;
+    /* Allows children to participate in form-grid */
+}
+
+.form-row label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    color: #374151;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    /* Prevent wrapping */
+}
+
+.form-row label span {
+    display: block;
+    white-space: nowrap;
+}
+
+.form-row label.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-row label.span-2 {
+    grid-column: span 2;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font: inherit;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin: 0;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1);
+}
+
+.form-section-title {
+    grid-column: 1 / -1;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 15px 0 5px 0;
+    text-align: left;
+    border-bottom: 2px solid #E8F5E9;
+    padding-bottom: 8px;
+}
+
+.form-divider {
+    grid-column: 1 / -1;
+    border: none;
+    border-top: 2px solid #E8F5E9;
+    margin: 10px 0;
+    display: none;
+    /* Hide if section title handles border */
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
 }

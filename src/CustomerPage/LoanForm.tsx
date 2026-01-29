@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Customer, LoanItem } from "../types/loan";
+import type { Customer, LoanItem } from "../types/loan";
 import { FiPlus, FiSave, FiUser, FiFileText } from "react-icons/fi";
 import "./LoanForm.css";
 

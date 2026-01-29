@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { nanoid } from "nanoid/non-secure";
 import type { Loan } from "../types/loan";
 
@@ -214,7 +215,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                 return {
                   ...loan,
                   recoveredAmount: newRecovered,
-                  status: isFullyPaid ? "closed" : "active",
+                  status: isFullyPaid ? "paid" : "active",
                 };
               }
               return loan;

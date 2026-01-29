@@ -2,29 +2,51 @@ import {
   FiUsers,
   FiBox,
   FiFileText,
-  FiTrendingUp,
   FiCreditCard,
-  FiClipboard,
   FiBarChart2,
-  FiDownload,
-  FiPlusSquare,
 } from "react-icons/fi";
-import Layout from "../layout/Layout";
+import { useState, useEffect } from "react";
+
 import StatCard from "./StatCard";
 import QuickAction from "./QuickAction";
 import RevenueChart from "./RevenueChart";
 import TopProducts from "./TopProducts";
 import { useDashboard } from "./DashboardContext";
+import { getInvoices } from "../PaymentReceipts/invoiceStorage";
+import { getReceipts } from "../PaymentReceipts/receiptStorage";
 import "./DashboardPage.css";
 
 export default function Dashboard() {
-  const { customers, totalRevenue, totalRecovered, products } = useDashboard();
+  const { customers, totalRecovered, products } = useDashboard();
+  const [invoices, setInvoices] = useState(getInvoices());
+  const [receipts, setReceipts] = useState(getReceipts());
+
+  // Listen for invoice and receipt updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      setInvoices(getInvoices());
+      setReceipts(getReceipts());
+    };
+
+    window.addEventListener('storage', handleUpdate);
+
+    // Poll for updates every 2 seconds
+    const interval = setInterval(handleUpdate, 2000);
+
+    return () => {
+      window.removeEventListener('storage', handleUpdate);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const totalInvoiceCount = invoices.length || customers.reduce((acc, c) => acc + c.purchaseHistory.length, 0);
+  const totalPayments = receipts.reduce((sum, r) => sum + r.amount, 0);
 
   const stats = [
     { title: "Total Customers", value: customers.length.toString(), icon: <FiUsers /> },
     { title: "Total Products", value: products.length.toString(), icon: <FiBox /> },
-    { title: "Total Invoices", value: customers.reduce((acc, c) => acc + c.purchaseHistory.length, 0).toLocaleString(), icon: <FiFileText /> },
-    { title: "Total Recovered", value: `₹${totalRecovered.toLocaleString()}`, icon: <FiCreditCard /> },
+    { title: "Total Invoices", value: totalInvoiceCount.toLocaleString(), icon: <FiFileText /> },
+    { title: "Total Recovered", value: `₹${(totalRecovered + totalPayments).toLocaleString()}`, icon: <FiCreditCard /> },
   ];
 
   const quickActions = [
@@ -37,7 +59,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <Layout>
+    <>
       <section className="stat-grid">
         {stats.map((stat) => (
           <StatCard key={stat.title} {...stat} />
@@ -62,6 +84,6 @@ export default function Dashboard() {
         <RevenueChart />
         <TopProducts />
       </div>
-    </Layout>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiPhone, FiMail, FiRefreshCcw } from "react-icons/fi";
-import Layout from "../layout/Layout";
+
 import { useDashboard } from "../DashboardPage/DashboardContext";
 
 export default function ViewHistory() {
@@ -15,7 +15,7 @@ export default function ViewHistory() {
     };
 
     return (
-        <Layout>
+        <>
             <section className="panel list-panel">
                 <div className="table-header">
 
@@ -85,6 +85,6 @@ export default function ViewHistory() {
                     </table>
                 </div>
             </section>
-        </Layout>
+        </>
     );
 }

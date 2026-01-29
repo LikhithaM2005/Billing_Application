@@ -1,6 +1,29 @@
+:root {
+  --primary: #1b5e20;
+  --primary-dark: #0f3f14;
+  --surface: #ffffff;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f0fdf4;
+  --text: #0f172a;
+  --font-main: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body.dark-mode {
+  --primary: #2e7d32;
+  --primary-dark: #1b5e20;
+  --surface: #1e293b;
+  --muted: #94a3b8;
+  --border: #334155;
+  --bg: #0f172a;
+  --text: #f1f5f9;
+}
+
 /* Reset & full-screen setup */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -8,20 +31,17 @@ body,
 #root {
   height: 100%;
   width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
-/* Remove Vite default centering */
 body {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-main);
   line-height: 1.5;
-  font-weight: 400;
+  color: var(--text);
+  background: var(--bg);
   min-width: 320px;
   overflow-x: hidden;
 }
 
-/* Remove default styles that interfere with UI */
 a {
   text-decoration: none;
   color: inherit;
@@ -30,4 +50,60 @@ a {
 button {
   font-family: inherit;
   cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Common Layout Components */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(27, 94, 32, 0.2);
+}
+
+.primary-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #E8F5E9;
+  /* Light green */
+  color: var(--primary);
+  /* Dark green text */
+  border: 1px solid #A1D99B;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: #C8E6C9;
+  border-color: var(--primary);
+}
+
+/* Global Required Asterisk Styling */
+.required {
+  color: #000000 !important;
+  font-weight: bold;
+  margin-left: 2px;
 }

@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import Layout from "../layout/Layout";
+
 import { LoanForm } from "./LoanForm";
 import { FiArrowLeft } from "react-icons/fi";
-import { Customer, Loan, LoanItem } from "../types/loan";
+import type { Loan, LoanItem } from "../types/loan";
 import { useDashboard } from "../DashboardPage/DashboardContext";
 import { nanoid } from "nanoid/non-secure";
 
@@ -15,14 +15,14 @@ export default function CreateLoan() {
 
     if (!customerData) {
         return (
-            <Layout>
+            <>
                 <div style={{ padding: "20px" }}>
                     <p>No customer data found. Please start from Customer Management.</p>
                     <button className="secondary-btn" onClick={() => navigate("/customers")}>
                         <FiArrowLeft /> Back to Customers
                     </button>
                 </div>
-            </Layout>
+            </>
         );
     }
 
@@ -61,7 +61,7 @@ export default function CreateLoan() {
     };
 
     return (
-        <Layout>
+        <>
             <section className="panel">
 
 
@@ -78,6 +78,6 @@ export default function CreateLoan() {
                     </div>
                 </div>
             </section>
-        </Layout>
+        </>
     );
 }

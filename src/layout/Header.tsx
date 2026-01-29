@@ -9,7 +9,9 @@ const PAGE_TITLES: Record<string, string> = {
   "/categories": "CATEGORY MANAGEMENT",
   "/products": "PRODUCT MANAGEMENT",
   "/invoices": "INVOICE MANAGEMENT",
-  "/payments": "PAYMENT & RECEIPTS",
+  "/payments": "RECEIPT MANAGEMENT",
+  "/payments/receipts": "RECEIPT MANAGEMENT",
+  "/payments/receive": "RECEIPT MANAGEMENT",
   "/reports": "REPORTS",
   "/profile": "PROFILE",
   "/settings": "SETTINGS",
@@ -41,7 +43,23 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isDashboard = location.pathname === "/dashboard";
-  const pageTitle = PAGE_TITLES[location.pathname];
+
+  // Find the closest matching title
+  const getPageTitle = (path: string) => {
+    // Exact match first
+    if (PAGE_TITLES[path]) return PAGE_TITLES[path];
+
+    // Check if it's a sub-path (e.g. /payments/receipts/1 -> /payments/receipts)
+    const segments = path.split('/');
+    for (let i = segments.length - 1; i > 0; i--) {
+      const subPath = segments.slice(0, i).join('/');
+      if (PAGE_TITLES[subPath]) return PAGE_TITLES[subPath];
+    }
+
+    return "Dashboard";
+  };
+
+  const pageTitle = getPageTitle(location.pathname);
 
   /* Update time ONLY on dashboard */
   useEffect(() => {
@@ -136,7 +154,7 @@ export default function Header() {
                 onClick={() => {
                   // logout logic here
                   setOpen(false);
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
                 Logout

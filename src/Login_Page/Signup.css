@@ -32,11 +32,16 @@
 .row-3 input,
 .row-3 select {
   width: 100%;
-  height: 42px;                     /* SAME HEIGHT */
-  padding: 8px 10px;                /* SAME PADDING */
-  border-radius: 8px;               /* SAME RADIUS */
-  border: 1px solid #c8e6c9;        /* SAME BORDER */
-  background-color: #f1faf3;        /* SAME COLOR */
+  height: 42px;
+  /* SAME HEIGHT */
+  padding: 8px 10px;
+  /* SAME PADDING */
+  border-radius: 8px;
+  /* SAME RADIUS */
+  border: 1px solid #c8e6c9;
+  /* SAME BORDER */
+  background-color: #f1faf3;
+  /* SAME COLOR */
   font-size: 14px;
   outline: none;
 }
@@ -81,14 +86,34 @@ select {
 
 /* Icons */
 .icon {
-  margin-right: 6px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 16px;
+  color: #2e7d32;
+  line-height: 1;
+  margin-right: 4px;
 }
 
 /* Eye toggle */
 .toggle {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #2e7d32;
+  line-height: 1;
   cursor: pointer;
-  margin-left: 6px;
+  margin-left: 4px;
+  border-radius: 6px;
 }
 
 /* Error text */
@@ -129,7 +154,8 @@ select {
 }
 
 .signin-link {
-  color: #2f8f68;   /* same light green as Forgot Password */
+  color: #2f8f68;
+  /* same light green as Forgot Password */
   cursor: pointer;
   font-weight: 500;
 }
@@ -156,9 +182,3 @@ label {
   color: #1b5e20;
   margin-bottom: 4px;
 }
-
-.required {
-  color: red;
-  font-weight: bold;
-}
-
