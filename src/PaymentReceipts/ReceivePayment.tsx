@@ -129,7 +129,17 @@ const ReceivePayment = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ padding: '0 0.5rem' }}>
-        <h3 style={{ fontSize: '1.1rem', marginBottom: '1.25rem', color: '#1B5E20' }}>Payment Details</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.1rem', margin: 0, color: '#1B5E20' }}>Payment Details</h3>
+          <button
+            type="button"
+            className="secondary-btn"
+            onClick={() => navigate('/payments/receipts')}
+            style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+          >
+            View All Receipts
+          </button>
+        </div>
 
         <div className="form-group">
           <label className="form-label">Invoice Number</label>
