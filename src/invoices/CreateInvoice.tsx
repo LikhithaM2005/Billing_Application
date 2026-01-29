@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateInvoice.module.css";
 import { saveInvoice, generateInvoiceNumber, type Invoice } from "../PaymentReceipts/invoiceStorage";
+import { useDashboard } from "../DashboardPage/DashboardContext";
 
 /* ================= TYPES ================= */
 
@@ -18,7 +19,13 @@ interface InvoiceItem {
 
 const CreateInvoice = () => {
   const navigate = useNavigate();
+  const { customers } = useDashboard();
   const [step, setStep] = useState(1);
+
+  // Searchable Dropdown State
+  const [customerSearch, setCustomerSearch] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   /* ---------- HEADER STATE ---------- */
   const [header, setHeader] = useState({
@@ -46,6 +53,29 @@ const CreateInvoice = () => {
       hsnCode: "",
     },
   ]);
+
+  /* ---------- SEARCH LOGIC ---------- */
+  const filteredCustomers = useMemo(() => {
+    return customers.filter(c =>
+      c.name.toLowerCase().includes(customerSearch.toLowerCase())
+    );
+  }, [customers, customerSearch]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectCustomer = (name: string) => {
+    setHeader(prev => ({ ...prev, customer: name }));
+    setCustomerSearch(name);
+    setShowDropdown(false);
+  };
 
   /* ================= HANDLERS ================= */
 
@@ -167,36 +197,66 @@ const CreateInvoice = () => {
 
           <div className={styles.grid}>
             <div>
-              <label>Customer *</label>
-              <select name="customer" onChange={handleHeaderChange}>
-                <option value="">Select Customer</option>
-                <option>ABC Pvt Ltd</option>
-                <option>XYZ Enterprises</option>
-              </select>
+              <label className={styles.label}>Customer *</label>
+              <div className={styles.dropdownWrapper} ref={dropdownRef}>
+                <input
+                  type="text"
+                  placeholder="Search customer..."
+                  value={customerSearch}
+                  onFocus={() => setShowDropdown(true)}
+                  onChange={(e) => {
+                    setCustomerSearch(e.target.value);
+                    setShowDropdown(true);
+                    // Clear the selection if user types
+                    if (header.customer !== e.target.value) {
+                      setHeader(prev => ({ ...prev, customer: "" }));
+                    }
+                  }}
+                  className={styles.input}
+                />
+
+                {showDropdown && (
+                  <div className={styles.dropdownList}>
+                    {filteredCustomers.length > 0 ? (
+                      filteredCustomers.map((c) => (
+                        <div
+                          key={c.id}
+                          className={styles.dropdownItem}
+                          onClick={() => selectCustomer(c.name)}
+                        >
+                          {c.name}
+                        </div>
+                      ))
+                    ) : (
+                      <div className={styles.noResults}>No customers found</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
-              <label>Issue Date *</label>
+              <label className={styles.label}>Issue Date *</label>
               <input type="date" name="issueDate" onChange={handleHeaderChange} />
             </div>
 
             <div>
-              <label>Due Date *</label>
+              <label className={styles.label}>Due Date *</label>
               <input type="date" name="dueDate" onChange={handleHeaderChange} />
             </div>
 
             <div>
-              <label>Registration Number</label>
+              <label className={styles.label}>Registration Number</label>
               <input name="registrationNumber" onChange={handleHeaderChange} />
             </div>
 
             <div>
-              <label>Tax Type</label>
+              <label className={styles.label}>Tax Type</label>
               <input name="taxType" placeholder="GST / VAT" onChange={handleHeaderChange} />
             </div>
 
             <div>
-              <label>Guarantor Mobile</label>
+              <label className={styles.label}>Guarantor Mobile</label>
 
               <div className={styles.mobileRow}>
                 <select
@@ -228,13 +288,13 @@ const CreateInvoice = () => {
             </div>
           </div>
 
-          <label>Construction Address</label>
+          <label className={styles.label}>Construction Address</label>
           <textarea name="constructionAddress" onChange={handleHeaderChange} />
 
-          <label>Notes</label>
+          <label className={styles.label}>Notes</label>
           <textarea name="notes" onChange={handleHeaderChange} />
 
-          <label>Terms & Conditions</label>
+          <label className={styles.label}>Terms & Conditions</label>
           <textarea name="terms" onChange={handleHeaderChange} />
 
           <button

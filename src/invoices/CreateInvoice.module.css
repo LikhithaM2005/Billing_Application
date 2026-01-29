@@ -49,7 +49,7 @@
 /* =========================
    Form Elements
 ========================= */
-label {
+.label {
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 8px;
@@ -179,4 +179,47 @@ textarea {
 
 .primaryBtn:hover {
   background: #1B5E20;
+}
+
+/* =========================
+   Searchable Dropdown
+   ========================= */
+.dropdownWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dropdownList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+}
+
+.dropdownItem {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.dropdownItem:hover {
+  background: #F3F4F6;
+  color: #2E7D32;
+  font-weight: 600;
+}
+
+.noResults {
+  padding: 10px 12px;
+  color: #9CA3AF;
+  font-size: 14px;
+  font-style: italic;
 }
