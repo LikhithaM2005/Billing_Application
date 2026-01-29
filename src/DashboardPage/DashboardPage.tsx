@@ -53,7 +53,7 @@ export default function Dashboard() {
     { title: "Customer Management", description: "Add or edit customers", icon: <FiUsers style={{ color: "#7c4dff" }} />, to: "/customers" },
     { title: "Category Management", description: "Organize catalog", icon: <FiBox style={{ color: "#ffab40" }} />, to: "/categories" },
     { title: "Product Management", description: "Update pricing & stock", icon: <FiFileText style={{ color: "#90a4ae" }} />, to: "/products" },
-    { title: "Payment & Receipts", description: "Record payments", icon: <FiCreditCard style={{ color: "#40c4ff" }} />, to: "/payments" },
+    { title: "Payment & Receipts", description: "Record payments", icon: <FiCreditCard style={{ color: "#40c4ff" }} />, to: "/payments/receipts" },
     { title: "Invoice Management", description: "Create & track invoices", icon: <FiFileText style={{ color: "#e0e0e0" }} />, to: "/invoices" },
     { title: "Reports", description: "Download exports", icon: <FiBarChart2 style={{ color: "#ffeb3b" }} />, to: "/reports" },
   ];

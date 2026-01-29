@@ -44,12 +44,8 @@ const ReceiptDetail = () => {
   // Default customer address (Mock data for now, will be fetched from Customer module later)
   const customerAddress = '123 Business District, Main Main Road, New Delhi, 110001';
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const handleViewHtml = () => {
-    const receiptHtml = `
+  const generateReceiptHtml = () => {
+    return `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -124,6 +120,7 @@ const ReceiptDetail = () => {
               @media print {
                   body { background-color: #fff; margin: 0; padding: 0; }
                   .receipt-container { box-shadow: none; width: 100%; border: none; }
+                  .no-print { display: none; }
               }
           </style>
       </head>
@@ -176,7 +173,24 @@ const ReceiptDetail = () => {
       </body>
       </html>
     `;
+  };
 
+  const handlePrint = () => {
+    const receiptHtml = generateReceiptHtml();
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(receiptHtml);
+      printWindow.document.close();
+      // Wait for content to load then trigger print
+      printWindow.onload = () => {
+        printWindow.print();
+        // Optional: printWindow.close(); // Close after printing if desired
+      };
+    }
+  };
+
+  const handleViewHtml = () => {
+    const receiptHtml = generateReceiptHtml();
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.write(receiptHtml);
