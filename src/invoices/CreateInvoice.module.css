@@ -50,11 +50,11 @@
    Form Elements
 ========================= */
 label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
   display: block;
-  color: #374151;
+  color: #111827;
 }
 
 input,
