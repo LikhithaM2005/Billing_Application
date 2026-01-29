@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CreateInvoice.module.css";
+import { saveInvoice, generateInvoiceNumber, type Invoice } from "../PaymentReceipts/invoiceStorage";
 
 /* ================= TYPES ================= */
 
@@ -15,6 +17,7 @@ interface InvoiceItem {
 /* ================= COMPONENT ================= */
 
 const CreateInvoice = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   /* ---------- HEADER STATE ---------- */
@@ -123,12 +126,32 @@ const CreateInvoice = () => {
   };
 
   const generateInvoice = () => {
-    console.log("GENERATED", {
-      header,
-      items,
-      status: "GENERATED",
+    const invoiceNo = generateInvoiceNumber();
+
+    const newInvoice: Invoice = {
+      id: Date.now().toString(),
+      invoiceNumber: invoiceNo,
+      customerName: header.customer,
+      date: header.issueDate,
+      dueDate: header.dueDate,
+      totalAmount: grandTotal,
+      paidAmount: 0,
+      balanceAmount: grandTotal,
+      status: 'pending'
+    };
+
+    saveInvoice(newInvoice);
+
+    alert(`Invoice ${invoiceNo} generated successfully!`);
+
+    // Redirect to receive payment page with pre-filled details
+    navigate("/payments", {
+      state: {
+        invoiceNo: invoiceNo,
+        customer: header.customer,
+        balance: grandTotal
+      }
     });
-    alert("Invoice generated (frontend only)");
   };
 
   /* ================= UI ================= */
@@ -172,34 +195,34 @@ const CreateInvoice = () => {
               <input name="taxType" placeholder="GST / VAT" onChange={handleHeaderChange} />
             </div>
 
-           <div>
-  <label>Guarantor Mobile</label>
+            <div>
+              <label>Guarantor Mobile</label>
 
-  <div className={styles.mobileRow}>
-    <select
-      name="countryCode"
-      value={header.countryCode}
-      onChange={handleHeaderChange}
-    >
-      <option value="+91">+91</option>
-      <option value="+1">+1</option>
-      <option value="+44">+44</option>
-    </select>
+              <div className={styles.mobileRow}>
+                <select
+                  name="countryCode"
+                  value={header.countryCode}
+                  onChange={handleHeaderChange}
+                >
+                  <option value="+91">+91</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                </select>
 
-    <input
-      name="guarantorMobile"
-      inputMode="numeric"
-      placeholder="10 digit number"
-      maxLength={10}
-      value={header.guarantorMobile}
-      onChange={e =>
-        setHeader(prev => ({
-          ...prev,
-          guarantorMobile: e.target.value.replace(/\D/g, ""),
-        }))
-      }
-    />
-  
+                <input
+                  name="guarantorMobile"
+                  inputMode="numeric"
+                  placeholder="10 digit number"
+                  maxLength={10}
+                  value={header.guarantorMobile}
+                  onChange={e =>
+                    setHeader(prev => ({
+                      ...prev,
+                      guarantorMobile: e.target.value.replace(/\D/g, ""),
+                    }))
+                  }
+                />
+
 
               </div>
             </div>
@@ -218,7 +241,7 @@ const CreateInvoice = () => {
             className={styles.primaryBtn}
             onClick={() => validateHeader() && setStep(2)}
           >
-            Invoice Items 
+            Invoice Items
           </button>
         </div>
       )}
